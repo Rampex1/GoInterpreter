@@ -16,9 +16,16 @@ const (
 	INT   = "INT"   // 134356
 
 	// Operators
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
 
+	LT = "<"
+	GT = ">"
+	
 	// Delimeters
 	COMMA     = ","
 	SEMICOLON = ";"
