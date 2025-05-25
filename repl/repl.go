@@ -3,6 +3,7 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"github.com/Rampex1/GoInterpreter/evaluator"
 	"github.com/Rampex1/GoInterpreter/lexer"
 	"github.com/Rampex1/GoInterpreter/parser"
 	"io"
@@ -30,11 +31,10 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		if _, err := io.WriteString(out, program.String()); err != nil {
-			fmt.Fprintf(out, "error writing program output: %v\n", err)
-		}
-		if _, err := io.WriteString(out, "\n"); err != nil {
-			fmt.Fprintf(out, "error writing newline: %v\n", err)
+		evaluated := evaluator.Eval(program)
+		if evaluated != nil {
+			io.WriteString(out, evaluated.Inspect())
+			io.WriteString(out, "\n")
 		}
 	}
 }
