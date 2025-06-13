@@ -129,20 +129,6 @@ func evalProgram(program *ast.Program, env *object.Environment) object.Object {
 			return result
 		}
 	}
-
-	return result
-}
-
-func evalStatements(stmts []ast.Statement, env *object.Environment) object.Object {
-	var result object.Object
-
-	for _, statement := range stmts {
-		result = Eval(statement, env)
-		if returnValue, ok := result.(*object.ReturnValue); ok {
-			return returnValue.Value
-		}
-	}
-
 	return result
 }
 
@@ -158,13 +144,6 @@ func evalBlockStatement(block *ast.BlockStatement, env *object.Environment) obje
 		}
 	}
 	return result
-}
-
-func nativeBoolToBooleanObject(input bool) *object.Boolean {
-	if input {
-		return TRUE
-	}
-	return FALSE
 }
 
 func evalPrefixExpression(operator string, right object.Object) object.Object {
@@ -356,6 +335,13 @@ func evalHashIndexExpression(hash, index object.Object) object.Object {
 		return NULL
 	}
 	return pair.Value
+}
+
+func nativeBoolToBooleanObject(input bool) *object.Boolean {
+	if input {
+		return TRUE
+	}
+	return FALSE
 }
 
 func isTruthy(obj object.Object) bool {

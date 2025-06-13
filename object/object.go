@@ -73,7 +73,7 @@ func (f *Function) Type() ObjectType { return FUNCTION_OBJ }
 func (f *Function) Inspect() string {
 	var out bytes.Buffer
 
-	params := []string{}
+	var params []string
 	for _, p := range f.Parameters {
 		params = append(params, p.String())
 	}
@@ -108,7 +108,7 @@ type Array struct {
 func (ao *Array) Type() ObjectType { return ARRAY_OBJ }
 func (ao *Array) Inspect() string {
 	var out bytes.Buffer
-	elements := []string{}
+	var elements []string
 	for _, e := range ao.Elements {
 		elements = append(elements, e.Inspect())
 	}
@@ -137,7 +137,10 @@ func (i *Integer) HashKey() HashKey {
 }
 func (s *String) HashKey() HashKey {
 	h := fnv.New64a()
-	h.Write([]byte(s.Value))
+	_, err := h.Write([]byte(s.Value))
+	if err != nil {
+		return HashKey{}
+	}
 	return HashKey{Type: s.Type(), Value: h.Sum64()}
 }
 
@@ -152,7 +155,7 @@ type Hash struct {
 func (h *Hash) Type() ObjectType { return HASH_OBJ }
 func (h *Hash) Inspect() string {
 	var out bytes.Buffer
-	pairs := []string{}
+	var pairs []string
 	for _, pair := range h.Pairs {
 		pairs = append(pairs, fmt.Sprintf("%s: %s",
 			pair.Key.Inspect(), pair.Value.Inspect()))
